@@ -1,0 +1,136 @@
+﻿@model WebBanHangOnline.Models.EF.Order
+@using PagedList;
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Home" class="nav-link">Trang chủ</a>
+        </li>
+        <li><a class="nav-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a> </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Order" class="nav-link">Đơn hàng</a>
+        </li>
+        <li><a class="nav-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a> </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Chi tiết đơn hàng</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Order">Đơn hàng</a></li>
+                    <li class="breadcrumb-item active">Chi tiết đơn hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewBag.Title</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Mã đơn hàng</label>
+                        <p class="form-control">@Model.Code</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Họ tên khách hàng</label>
+                        <p class="form-control">@Model.CustomerName</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <p class="form-control">@Model.Phone</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p class="form-control">@Model.Email</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Ngày tạo</label>
+                        <p class="form-control">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Hình thức thanh toán</label>
+                        <p class="form-control">@(Model.TypePayment == 1 ? "COD" : "Chuyển khoản")</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        @*<p class="form-control">@(Model.Status == 0 ? "Chờ thanh toán" : Model.Status == 1 ? "Đã thanh toán" : "Đã hủy")</p>*@
+                        <p class="form-control">
+                            @(Model.Status == 0 ? "Chờ xác nhận" :
+                              Model.Status == 1 ? "Đang vận chuyển" :
+                              Model.Status == 2 ? "Đã giao" :
+                              Model.Status == 3 ? "Đã hủy" : "Không xác định")
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tạo bởi</label>
+                        <p class="form-control">@Model.CreatedBy</p>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label>Danh sách sản phẩm</label>
+                </div>
+                <div class="col-12">
+                    @Html.Action("ItemsOrdered", "Order", new { id = Model.Id })
+                </div>
+            </div>
+            <div class="form-group">
+                <a href="#" class="btn btn-danger" onclick="window.history.back()">Quay lại</a>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

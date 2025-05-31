@@ -1,0 +1,120 @@
+﻿@model WebBanHangOnline.Models.EF.ReviewProduct
+
+<div class="add_review" style="margin-top: 0;">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <script>
+            function redirectToLogin() {
+                alert('Vui lòng đăng nhập để đánh giá sản phẩm!');
+                //window.location.href = '@Url.Action("LoginRegister", "Account", new { returnUrl = Request.Url.AbsolutePath })';
+            }
+        </script>
+    }
+
+    @using (Ajax.BeginForm("PostReview", "ReviewProduct", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "loadReview",
+        OnSuccess = "OnSuccessRE",
+        OnFailure = "OnFailureRE",
+        OnBegin = "OnBeginRE"
+
+    }, new { @Id = "review_form" }))
+    {
+        <script>
+            function OnBeginRE() {
+                $('#review_submit').attr("disabled", "disabled");
+            }
+
+            function OnSuccessRE(res) {
+                if (res.success) {
+                    alert("Cảm ơn bạn đã để lại đánh giá.");
+                    $("#review_form")[0].reset(); // Reset form
+
+                    // Reload reviews
+                    $.ajax({
+                        url: '/ReviewProduct/LoadReview',
+                        type: 'GET',
+                        data: { productId: @ViewBag.ProductId },
+                        success: function (data) {
+                            $('#loadReview').html(data); // Update reviews
+
+                            // Cập nhật điểm đánh giá trung bình và số lượng đánh giá
+                            $.ajax({
+                                url: '/ReviewProduct/GetAverageRating',
+                                type: 'GET',
+                                data: { productId: @ViewBag.ProductId },
+                                success: function (ratingData) {
+                                    if (ratingData) {
+                                        var stars = $('.product-details .star-rating');
+                                        stars.empty();
+
+                                        var fullStars = Math.floor(ratingData.average);
+                                        var halfStar = ratingData.average % 1 >= 0.5;
+
+                                        for (var i = 0; i < fullStars; i++) {
+                                            stars.append('<li style="margin-right: 2px !important;"><i class="fa fa-star" aria-hidden="true"></i></li>');
+                                        }
+                                        if (halfStar) {
+                                            stars.append('<li style="margin-right: 2px !important;"><i class="fa fa-star-half-o" aria-hidden="true"></i></li>');
+                                        }
+                                        for (var i = fullStars + (halfStar ? 1 : 0); i < 5; i++) {
+                                            stars.append('<li style="margin-right: 2px !important;"><i class="fa fa-star-o" aria-hidden="true"></i></li>');
+                                        }
+
+                                        // Cập nhật số lượng đánh giá
+                                        $('.tabs .tab[data-active-tab="tab-3"] span').text('Đánh giá (' + ratingData.count + ')');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    alert("Đã xảy ra lỗi khi gửi đánh giá.");
+                }
+                $('#review_submit').removeAttr("disabled");
+            }
+
+            function OnFailureRE() {
+                alert("Lỗi khi gửi yêu cầu.");
+                $('#review_submit').removeAttr("disabled");
+            }
+        </script>
+
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 10px !important;">
+            <h1>Thêm đánh giá</h1>
+            @Html.LabelFor(x => x.FullName, "Tên khách hàng", new { @class = "form_label" })
+            @Html.TextBoxFor(x => x.FullName, new { @class = "form_input input_name", @placeholder = "Họ tên", @id = "review_name", @readonly = "readonly", @style = "background: #eee; margin: 0;" })
+            @*@Html.TextBoxFor(x => x.Email, new { @class = "form_input input_email", @placeholder = "Email", @id = "review_email" })*@
+            @Html.HiddenFor(x => x.UserName)
+            @Html.HiddenFor(x => x.ProductId, new { @Value = ViewBag.ProductId })
+            <input type="text" id="txtRate" name="Rate" value="5" style="display: none;" />
+        </div>
+        <div>
+            <div class="d-flex" style="margin: 15px 0 15px 0;">
+                <h1 style="margin: 0;">Chất lượng sản phẩm:</h1>
+                <ul class="user_star-rating">
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                </ul>
+            </div>
+            @Html.TextAreaFor(x => x.Content, new { @class = "input_review", @rows = "4", @placeholder = "Đánh giá của bạn...", @style = "margin: 0;" })
+        </div>
+        if (User.Identity.IsAuthenticated)
+        {
+        <div class="text-left text-sm-right">
+            <button id="review_submit" type="submit" class="green-button review-submit-btn trans_300">Gửi</button>
+        </div>
+        }
+        else
+        {
+        <div class="text-left text-sm-right">
+            <button type="button" class="green-button review-submit-btn trans_300" onclick="redirectToLogin()">Gửi</button>
+        </div>
+        }
+    }
+</div>

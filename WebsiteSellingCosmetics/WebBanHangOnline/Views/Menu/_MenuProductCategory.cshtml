@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductCategory>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        <div class="col text-center">
+            <div class="section-title new-arrivals-title">
+                <h2>Danh Mục Nổi Bật</h2>
+            </div>
+        </div>
+    </div>
+    <div class="banner mt-5">
+        <div class="container">
+            <div class="row">
+                @{
+                    int columnSize = 12 / Model.Count();
+                    if (columnSize < 1)
+                    {
+                        columnSize = 1;
+                    }
+                }
+                @foreach (var item in Model)
+                {
+                <div class="col-md-@columnSize">
+                    <div class="banner_item align-items-center" style="background-image:url(@item.Icon); height: 200px">
+                        <div class="banner-category">
+                            <a href="/danh-muc-san-pham/@item.Alias-@(item.Id)">@item.Title</a>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+}

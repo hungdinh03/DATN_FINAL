@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/home_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/home_responsive.css">
+
+<!-- Slider -->
+@*<div class="main-slider" style="background-image:url(/Content/assets/images/slider_1.jpg)">
+        <div class="container fill-height">
+            <div class="row align-items-center fill-height">
+                <div class="col">
+                    <div class="main-slider-content">
+                        <h6>Spring / Summer Collection 2017</h6>
+                        <h1>Get up to 30% Off New Arrivals</h1>
+                        <div class="red-button shop-now-button"><a href="#">shop now</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<!-- Adv Carousel -->
+@Html.Action("AdvCarousel", "Adv")
+
+<!-- Banner -->
+@Html.Action("MenuProductCategory", "Menu")
+
+<!-- New Arrivals -->
+<div class="new-arrivals">
+    <div class="container">
+        @Html.Action("MenuArrivals", "Menu")
+    </div>
+</div>
+
+<!-- Deal of the week -->
+@Html.Action("ProductFeature", "Product")
+
+<!-- Best Selling -->
+@Html.Action("ProductSales", "Product")
+
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit-row">
+            <div class="col-lg-4 benefit-col">
+                <div class="benefit-item d-flex flex-row align-items-center">
+                    <div class="benefit-icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit-content">
+                        <h6>Trả hàng Miễn phí 15 ngày</h6>
+                        <p>Trả hàng miễn phí trong 15 ngày</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 benefit-col">
+                <div class="benefit-item d-flex flex-row align-items-center">
+                    <div class="benefit-icon"><i class="fa fa-shield" aria-hidden="true"></i></div>
+                    <div class="benefit-content">
+                        <h6>Hàng chính hãng 100%</h6>
+                        <p>Đảm bảo hàng chính hãng</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 benefit-col">
+                <div class="benefit-item d-flex flex-row align-items-center">
+                    <div class="benefit-icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit-content">
+                        <h6>Miễn phí vận chuyển</h6>
+                        <p>Áp dụng với một số tỉnh thành</p>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-3 benefit-col">
+                    <div class="benefit-item d-flex flex-row align-items-center">
+                        <div class="benefit-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                        <div class="benefit-content">
+                            <h6>opening all week</h6>
+                            <p>8AM - 09PM</p>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<!-- Blogs -->
+@Html.Action("NewsHome", "News")
+
+@section scripts {
+    <script src="~/Content/assets/plugins/easing/easing.js"></script>
+    <script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Content/assets/js/products_custom.js"></script>
+    <script src="~/Scripts/jsShopping.js"></script>
+    <script src="~/Scripts/jsHome.js"></script>
+}

@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                </ul>
+            </div>
+
+            <h2 id="title">@ViewBag.Title</h2>
+
+            <!-- Main Content -->
+
+            <div class="row">
+                <div class="col-md-12" id="loadItemCart">@Html.Action("ItemCart", "ShoppingCart")
+                </div>
+                <div class="col-md-12">
+                    @if (ViewBag.CheckCart == true)
+                    {
+                    <div class="text-right">
+                        <a href="#" class="btn btn-sm btn-danger red-button h-25 border-0 btnDeleteAll">Xóa hết</a>
+                        <a href="#" class="btn btn-sm btn-success green-button h-25 border-0 btnOrder">Đặt hàng</a>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jsShopping.js"></script>
+}

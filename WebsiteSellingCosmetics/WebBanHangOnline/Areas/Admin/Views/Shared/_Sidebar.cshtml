@@ -1,0 +1,133 @@
+﻿<!-- Sidebar -->
+<div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            @*<img src="~/Content/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">*@
+        </div>
+        <div class="info">
+            <a href="#" class="d-block">Xin chào <b class="text-white">@User.Identity.Name</b></a>
+        </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    @*<div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>*@
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item @((ViewContext.RouteData.Values["controller"].ToString() == "ProductCategory" || ViewContext.RouteData.Values["controller"].ToString() == "Product") ? "menu-open" : "")">
+                <a href="#" class="nav-link nav-link-header">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Quản lý sản phẩm
+                        <i class="right fas fa-angle-right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/ProductCategory" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "ProductCategory" ? "active" : "")" style="padding-left: 30px;">
+                            <i class="nav-icon fas fa-caret-right"></i>
+                            <p>Danh mục sản phẩm</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Product" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Product" ? "active" : "")" style="padding-left: 30px;">
+                            <i class="nav-icon fas fa-caret-right"></i>
+                            <p>Sản phẩm</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Order" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Order" ? "active" : "")">
+                    <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                    <p>
+                        Đơn hàng
+                    </p>
+                </a>
+            </li>
+            @*<li class="nav-item">
+            <a href="/Admin/Role" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Role" ? "active" : "")">
+                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                <p>
+                    Quyền
+                </p>
+            </a>
+        </li>*@
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a href="/Admin/Account" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Account" ? "active" : "")">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Tài khoản
+                        </p>
+                    </a>
+                </li>
+            }
+            <li class="nav-item">
+                <a href="/Admin/Statistical" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Statistical" ? "active" : "")">
+                    <i class="nav-icon fas fa-chart-bar"></i>
+                    <p>
+                        Thống kê
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/News" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "News" ? "active" : "")">
+                    <i class="nav-icon fas fa-newspaper"></i>
+                    <p>
+                        Tin tức
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Adv" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Adv" ? "active" : "")">
+                    <i class="nav-icon fas fa-ad"></i>
+                    <p>
+                        Quảng cáo
+                    </p>
+                </a>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a href="/Admin/SystemConfig" class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "SystemConfig" ? "active" : "")">
+                        <i class="nav-icon fas fa-list-ol"></i>
+                        <p>
+                            Cấu hình hệ thống
+                        </p>
+                    </a>
+                </li>
+            }
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="logoffLink">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Đăng xuất</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
+
+@if (Request.IsAuthenticated)
+{
+    <div style="display: none;">
+        @using (Html.BeginForm("Logoff", "Account", FormMethod.Post, new { @id = "logoffForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}

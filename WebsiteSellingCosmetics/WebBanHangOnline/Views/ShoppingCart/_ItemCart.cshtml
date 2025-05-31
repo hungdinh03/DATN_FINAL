@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.ShoppingCartItem>
+
+@if (Model != null && Model.Any())
+{
+    var i = 0;
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th><input type="checkbox" checked id="selectAll" /></th>
+                <th class="text-center">STT</th>
+                <th class="text-center">Ảnh sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th class="text-center">Giá</th>
+                <th class="text-center" width="100">Số lượng</th>
+                <th class="text-center">Thành tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="trow_@item.ProductId">
+                <td>
+                @if (item.LeftQuantity > 0 && !item.IsExpired)
+                {
+                    <input type="checkbox" checked class="cbkItem" data-price="@item.TotalPrice" value="@item.ProductId" />
+                }
+                </td>
+                <td class="text-center row_index">@(i + 1)</td>
+                <td class="text-center">
+                    <img src="@item.ProductImg" width="60" />
+                </td>
+                <td>
+                    <a href="/chi-tiet/@item.Alias-p@(item.ProductId)" style="color: #c5a25d">
+                        @item.ProductName
+                    </a>
+                </td>
+                <td>@item.CategoryName</td>
+                <td class="text-center">@string.Format("{0:N0}", item.Price)<u>đ</u></td>
+                <td class="text-center">
+                @if (item.LeftQuantity == 0 || item.IsExpired)
+                {
+                    <input type="text" disabled class="form-control quantity-input text-center" style="font-size: 12px;" value="Hết hàng" />
+                }
+                else
+                {
+                    <input type="number" min="1" max="@item.LeftQuantity" class="form-control quantity-input" id="@item.ProductId" value="@item.Quantity" data-price="@item.Price" />
+                    <div id="quantity-left">
+                        Còn: @item.LeftQuantity
+                    </div>
+                }
+                </td>
+                @if (item.LeftQuantity == 0 || item.IsExpired) 
+                {
+                <td class="text-center font-weight-bold total-price" id="totalPrice_@item.ProductId">0<u>đ</u></td>
+                }
+                else
+                {
+                <td class="text-center font-weight-bold total-price" id="totalPrice_@item.ProductId">@string.Format("{0:N0}", item.TotalPrice)<u>đ</u></td>
+                }
+                <td>
+                    <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger red-button h-25 border-0 btnDelete">Xóa</a>
+                </td>
+            </tr>
+            i++;
+        }
+            <tr class="font-weight-bold">
+                <td colspan="7" class="text-right">Tổng tiền: </td>
+                <td class="text-center" id="totalPrice"><u>0đ</u></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+}
+else
+{
+<h3 class="text-center">Giỏ hàng của bạn đang trống!</h3>
+<div class="row d-flex justify-content-center">
+    <a href="/danh-muc-san-pham/tat-ca" class="btn green-button text-white px-4">MUA NGAY</a>
+</div>
+}

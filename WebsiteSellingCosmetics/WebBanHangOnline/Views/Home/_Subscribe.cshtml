@@ -1,0 +1,42 @@
+﻿@model WebBanHangOnline.Models.EF.Subscribe
+
+<div class="newsletter py-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
+                    <h4>Đăng Ký Nhận Tin Mới Nhất</h4>
+                    <p class="text-left mt-2">Đăng ký để nhận thông tin liên lạc về các sản phẩm, dịch vụ, cửa hàng, sự kiện và các vấn đề đáng quan tâm của Cocoon</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+            @using (Ajax.BeginForm("Subscribe", "Home", new AjaxOptions
+            {
+                OnBegin = "OnBeginSub",
+                OnSuccess = "OnSuccessSub",
+                OnFailure = "OnFailureSub"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <script>
+                    function OnBeginSub() {
+
+                    }
+                    function OnSuccessSub(rq) {
+                        if (rq == true) {
+                            alert("Email của bạn đã được đăng ký thành công!")
+                        }
+                    }
+                    function OnFailureSub() {
+
+                    }
+                </script>
+                <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+                    <input id="newsletter_email" name ="Email" type="email" placeholder="Email của bạn" required="required" data-error="Valid email is required.">
+                    <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">Đăng ký</button>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</div>

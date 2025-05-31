@@ -1,0 +1,40 @@
+﻿@model PagedList.IPagedList<WebBanHangOnline.Models.EF.Order>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lịch sử mua hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li><a href="/">Trang chủ</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Đơn mua</a></li>
+        </ul>
+    </div>
+    <h2 id="title">@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-12">
+        @if (Model != null && Model.Any())
+        {
+            @Html.Partial("_OrderHistory", Model)
+        }
+        else
+        {
+            <h3 class="text-center">Bạn chưa có đơn hàng nào!</h3>
+            <div class="row d-flex justify-content-center">
+                <a href="/danh-muc-san-pham/tat-ca" class="btn green-button text-white px-4">MUA NGAY</a>
+            </div>
+        }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jsUser.js"></script>
+}
+

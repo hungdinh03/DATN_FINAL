@@ -1,0 +1,131 @@
+﻿@model WebBanHangOnline.Models.LoginRegisterViewModel
+@{
+    ViewBag.Title = "Đăng nhập / Đăng ký";
+}
+
+<style>
+    .container-split {
+        display: flex;
+        color: black;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+
+    .login-container, .register-container {
+        height: auto;
+        min-height: 195px;
+        transition: flex-basis 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px;
+        box-sizing: border-box;
+    }
+
+    .login-container {
+        background-color: white;
+        flex-basis: 75%;
+    }
+
+    .register-container {
+        background: linear-gradient(135deg, #c5a25d, #ffffff);
+        flex-basis: 25%;
+    }
+
+    .register-container h2, .login-container h2 {
+        text-align: center;
+        font-size: 36px;
+        color: black;
+    }
+
+    .register-container:hover .register-content {
+        opacity: 1;
+    }
+
+    .login-container:hover .login-content {
+        opacity: 1;
+    }
+
+    .form-container {
+        flex-basis: 100%;
+        max-width: 500px;
+        transition: flex-basis 1s ease;
+    }
+
+    .form-container input[type="submit"] {
+        flex-basis: 100%;
+    }
+
+    .form-control {
+        background: rgba(0, 0, 0, 0.05);
+        border: none;
+        border-radius: 20px;
+        padding-left: 15px;
+    }
+
+    .red-button, .green-button {
+        border-radius: 20px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .msg-container {
+        display: grid;
+    }
+
+    .validation-summary, .success-line {
+        display: none;
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .validation-summary .alert {
+        width: fit-content
+    }
+
+    .success-line {
+        margin-bottom: 15px;
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewBag.Title</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-split">
+        <!-- Register Section -->
+        <div class="register-container">
+            <div class="form-container">
+                <h2>Đăng Ký</h2>
+                <section class="register-content">
+                    @Html.Partial("_Register", Model.Register)
+                </section>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-container">
+            <div class="form-container">
+                <h2>Đăng Nhập</h2>
+                <section class="login-content">
+                    @Html.Partial("_Login", Model.Login)
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jsLoginRegister.js"></script>
+}
+

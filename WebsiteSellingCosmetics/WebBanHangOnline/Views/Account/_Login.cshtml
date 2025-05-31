@@ -1,0 +1,46 @@
+﻿@model WebBanHangOnline.Models.LoginViewModel
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form", id = "loginForm" }))
+{
+@Html.AntiForgeryToken()
+<hr />
+<div class="form-group">
+    @Html.LabelFor(m => m.UserName, "Tên đăng nhập", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập..." })
+        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, "Mật khẩu", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu..." })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="msg-container">
+    <div class="col-md-12 mb-2 success-line">
+        Bạn hãy chờ chút ...
+    </div>
+
+    <div class="col-md-12 validation-summary">
+        <div class="alert alert-danger" role="alert" style="">
+            <ul class="text-black validation-error"></ul>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-12">
+        <input type="submit" value="ĐĂNG NHẬP" class="btn green-button text-white" />
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-6">
+        <a href="/Account/ForgotPassword" style="color: #fe4c50 !important;" class="font-weight-bold forgotPasswordLink">Quên mật khẩu?</a>
+    </div>
+</div>
+}

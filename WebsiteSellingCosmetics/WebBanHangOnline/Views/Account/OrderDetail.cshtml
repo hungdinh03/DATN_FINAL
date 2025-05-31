@@ -1,0 +1,94 @@
+﻿@model WebBanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class=""><a href="/Account/OrderHistory"><i class="fa fa-angle-right" aria-hidden="true"></i>Đơn mua</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Chi tiết đơn hàng</a></li>
+                </ul>
+            </div>
+
+            <h2 id="title">@ViewBag.Title</h2>
+
+            <!-- Main Content -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <div class="form-group"><b>Mã đơn hàng:</b> @Model.Code</div>
+                        <div class="form-group"><b>Ngày tạo:</b> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</div>
+                        <div class="form-group"><b>Hình thức thanh toán:</b> @(Model.TypePayment == 1 ? "COD" : "Chuyển khoản")</div>
+                        @*<div class="form-group"><b>Trạng thái:</b> @(Model.Status == 0 ? "Chờ thanh toán" : Model.Status == 1 ? "Đã thanh toán" : "Đã hủy")</div>*@
+                    <div class="form-group">
+                        <b>Trạng thái:</b>
+                        @(Model.Status == 0 ? "Chờ xác nhận" :
+                          Model.Status == 1 ? "Đang vận chuyển" :
+                          Model.Status == 2 ? "Đã giao" :
+                          Model.Status == 3 ? "Đã hủy" : "Không xác định")
+                    </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">STT</th>
+                                    <th class="text-center">Ảnh sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th class="text-center">Giá</th>
+                                    <th class="text-center" width="100">Số lượng</th>
+                                    <th class="text-center">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    var i = 0;
+                                    var tongTien = 0;
+                                    foreach (var item in Model.OrderDetails)
+                                    {
+                                        tongTien += item.TotalPrice;
+                                        <tr>
+                                            <td class="text-center">@(i + 1)</td>
+                                            <td class="text-center">
+                                                <img src="@item.ProductImg" width="60" />
+                                            </td>
+                                            <td>
+                                                <a href="/chi-tiet/@item.Alias-p@(item.ProductId)" style="color: #c5a25d">
+                                                    @item.ProductName
+                                                </a>
+                                            </td>
+                                            <td>@item.CategoryName</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.Price)<u>đ</u></td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-right font-weight-bold">@string.Format("{0:N0}", item.TotalPrice)<u>đ</u></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td colspan="6" class="text-right">Tổng tiền: </td>
+                                        <td class="text-right">@string.Format("{0:N0}", tongTien)<u>đ</u></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

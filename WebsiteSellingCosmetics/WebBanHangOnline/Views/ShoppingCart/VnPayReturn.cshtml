@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "VnPayReturn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Thanh toán</a></li>
+                </ul>
+            </div>
+
+            <!-- Sidebar -->
+            <!-- Main Content -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3 class="">Thanh toán</h3>
+                    @if (ViewBag.Amount != null)
+                    {
+                    <p class="mb-0">
+                        Bạn đã thanh toán thành công với số tiền thanh toán (VND):
+                        <span class="font-weight-bold">
+                            @string.Format("{0:N0}", ViewBag.Amount)<u>đ</u>
+                        </span>
+                    </p>
+                    }
+                    <p>@ViewBag.InnerText</p>
+                </div>
+            </div>
+            @if (ViewBag.Amount != null) 
+            {
+                <div class="row d-flex justify-content-center">
+                    <a href="/danh-muc-san-pham/tat-ca" class="btn green-button text-white px-4">TIẾP TỤC MUA SẮM</a>
+                </div>
+            }
+            <hr />
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Cocoon Vietnam</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="~/Uploads/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/jquery-ui.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/PagedList.css">
+    @*@Styles.Render("~/Content/css")*@    
+
+    <style>
+        .header, .hamburger-menu {
+            display: none;
+        }
+
+        .search-result {
+            color: black;
+            font-family: Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 999;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background: #c5a25d;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 999px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            color: white;
+            background: #937a47;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .fa-bars:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="super_container">
+        <!-- Header -->
+        <header class="header trans_300">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="top-nav_left">hotline: 19009300</div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top-nav_right">
+                                <ul class="top-nav_menu">
+                                    <li class="account">
+                                        @if (!Request.IsAuthenticated)
+                                        {
+                                        <a href="/Account/LoginRegister" class="text-white font-weight-bold">
+                                            Tài khoản của tôi
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="account_selection rounded" style="z-index: 101;">
+                                            <li><a href="/Account/LoginRegister"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                                            <li><a href="/Account/LoginRegister"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
+                                        </ul>
+                                        }
+                                        else
+                                        {
+                                        <a href="/Account/Profile" class="text-white font-weight-bold">
+                                            Xin chào <span style="color: #c5a25d;">@User.Identity.Name</span>
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="account_selection rounded" style="width: 170px; z-index: 101;">
+                                            <li><a href="/Account/Profile"><i class="fa fa-user" aria-hidden="true"></i>Tài khoản của tôi</a></li>
+                                            <li><a href="/Account/OrderHistory"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Đơn mua</a></li>
+                                            <li><a href="#" id="logoffLink"><i class="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</a></li>
+                                        </ul>
+                                        <div style="display: none;">
+                                            @using (Html.BeginForm("Logoff", "Account", FormMethod.Post, new { @id = "logoffForm" }))
+                                            {
+                                            @Html.AntiForgeryToken()
+                                            }
+                                        </div>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <div class="main_nav_container" style="z-index: 100;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <a href="/">
+                                    <img src="~/Uploads/images/logo.svg" style="margin-left: -35px;" />
+                                </a>
+                            </div>
+                            <nav class="navbar">
+                                @Html.Action("MenuTop", "Menu")
+                                <ul class="navbar_user">
+                                    <li id="search_btn">
+                                        <a href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                    </li>
+                                    <!-- Popup tìm kiếm -->
+                                    <div id="search_popup" class="rounded" style="display:none; position:absolute; right:0; margin: 10px 20px 0; width:350px; background-color:white; border:1px solid #ddd; padding:20px;">
+                                        <input type="text" id="search_input" placeholder="Tìm kiếm sản phẩm..." style="width: 100%; border: none; border-bottom: 1px solid #fe4c50;" class="p-2">
+                                        <div id="search_results" style="max-height:200px; overflow-y:auto; margin-top:10px; padding-right: 10px; text-align: left;"></div>
+                                        <div id="no_results" style="display: none; color: red; text-align: left;">Không tìm thấy sản phẩm nào cho tìm kiếm của bạn.</div>
+                                    </div>
+                                    @*<li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>*@
+                                    <li class="checkout">
+                                        <a href="/gio-hang">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                            <span id="cartItemCount" class="checkout_items">0</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="hamburger-container">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="hamburger-menu">
+            <div class="hamburger-close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger-menu-content text-right">
+                <ul class="top-nav_menu">
+                    <li class="menu-item has-children">
+                        @if (!Request.IsAuthenticated)
+                        {
+                        <a href="#">
+                            Tài khoản của tôi
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="/Account/LoginRegister"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                            <li><a href="/Account/LoginRegister"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
+                        </ul>
+                        }
+                        else
+                        {
+                        <a href="#" class="text-black font-weight-bold">
+                            Xin chào <span style="color: #c5a25d;">@User.Identity.Name</span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="/Account/Profile"><i class="fa fa-user" aria-hidden="true"></i>Tài khoản của tôi</a></li>
+                            <li><a href="/Account/OrderHistory"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Đơn mua</a></li>
+                            <li><a href="#" id="logoffLink"><i class="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</a></li>
+                        </ul>
+                    }
+                    </li>
+                    @Html.Action("MenuTop", "Menu")
+                </ul>
+            </div>
+        </div>
+
+        <div class="fs-menu-overlay"></div>
+
+        <!-- Main -->
+        @RenderBody()
+
+        <!-- Footer -->
+        <footer class="footer">
+            @Html.Action("Subscribe", "Home")
+            <div class="container" @*style="border-top: 1px solid lightgray;"*@>
+                <div class="row" style="margin-top: -10px;">
+                    <div class="col-lg-6">
+                        <div class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
+                            <ul class="footer_nav">
+                                <li><a href="/tin-tuc">Tin tức</a></li>
+                                @*<li><a href="#">FAQs</a></li>*@
+                                <li><a href="/lien-he">Liên hệ chúng tôi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                @*<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>*@
+                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                @*<li><a href="#"><i class="fa fa-skype" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -20px; margin-bottom: 0px;">
+                    <div class="col-lg-12">
+                        <div class="footer_nav_container">
+                            <div class="cr">©2024 <a href="#">Cocoon</a>. Tất cả các quyền được bảo lưu.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <a href="#" class="btn back-to-top">↑ Lên đầu</a>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
+    <script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/jquery-ui.custom/jquery-ui.js"></script>
+    <script src="~/Content/assets/plugins/OwlCarousel/owl.carousel.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/assets/js/custom.js"></script>
+    <script src="~/Scripts/jsLayout.js"></script>
+    <script src="~/Scripts/jsMenu.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Thống kê";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Home" class="nav-link">Trang chủ</a>
+        </li>
+        <li><a class="nav-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a> </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Statistical" class="nav-link">Thống kê</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Home">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Thống kê</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Revenue Statistics Card -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thống kê doanh thu</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-inline mb-2">
+                        <label for="fromDate" class="mr-2">Từ ngày:</label>
+                        <input type="date" id="fromDate" class="form-control mr-2" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <label for="toDate" class="mr-2">Đến ngày:</label>
+                        <input type="date" id="toDate" class="form-control mr-2" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <label for="viewMode" class="mr-2">Chế độ:</label>
+                        <select id="viewMode" class="form-control mr-2">
+                            <option value="day">Ngày</option>
+                            <option value="month">Tháng</option>
+                            <option value="year">Năm</option>
+                        </select>
+                        <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="chart">
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th id="headerDate">Ngày</th>
+                                <th>Doanh thu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loadRevenue"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top/Bottom Products Cards -->
+    <div class="row">
+        <!-- Top 5 Products Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Top 5 sản phẩm bán chạy nhất</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Explicitly set width and height for the canvas -->
+                    @*<div style="height: 250px; position: relative;">
+                        <canvas id="topProductsChart" width="400" height="250"></canvas>
+                    </div>*@
+                    @*<div class="mt-4">*@
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng bán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loadTopProducts"></tbody>
+                        </table>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom 5 Products Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Top 5 sản phẩm bán chậm nhất</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Explicitly set width and height for the canvas -->
+                    @*<div style="height: 250px; position: relative;">
+                        <canvas id="bottomProductsChart" width="400" height="250"></canvas>
+                    </div>*@
+                    @*<div class="mt-4">*@
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng bán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loadBottomProducts"></tbody>
+                        </table>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Statistics Card -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thống kê số lượng bán, ngày hết hạn</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th id="headerProductImage" class="user-select-none" role="button">
+                            Hình ảnh
+                        </th>
+                        <th id="headerProductName" class="sortable text-primary user-select-none" role="button" data-sort-field="productName">
+                            Sản phẩm
+                            <i class="fas fa-sort"></i>
+                        </th>
+                        <th id="headerSoldQuantity" class="sortable text-primary user-select-none" role="button" data-sort-field="soldQuantity">
+                            Số lượng bán
+                            <i class="fas fa-sort"></i>
+                        </th>
+                        <th id="headerRemainingQuantity" class="sortable text-primary user-select-none" role="button" data-sort-field="remainingQuantity">
+                            Số lượng còn
+                            <i class="fas fa-sort"></i>
+                        </th>
+                        <th id="headerExpiredDate" class="sortable text-primary user-select-none" role="button" data-sort-field="expiredDate">
+                            Ngày hết hạn
+                            <i class="fas fa-sort"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="loadProductStatistic"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+        // Add this inline script to check if Chart.js is loaded properly
+        $(document).ready(function () {
+            console.log("Document ready");
+            console.log("Chart object exists:", typeof Chart !== 'undefined');
+            console.log("jQuery version:", $.fn.jquery);
+
+            // Check if canvas elements exist
+            console.log("topProductsChart element exists:", $("#topProductsChart").length > 0);
+            console.log("bottomProductsChart element exists:", $("#bottomProductsChart").length > 0);
+        });
+    </script>
+    <script src="~/Areas/Admin/Scripts/jsStatistical.js"></script>
+}

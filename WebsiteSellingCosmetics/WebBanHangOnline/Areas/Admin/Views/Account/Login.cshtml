@@ -1,0 +1,74 @@
+﻿@model WebBanHangOnline.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    //Layout = "~/Areas/Admin/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<style>
+    .msg-container {
+        display: grid;
+    }
+
+    .validation-summary, .success-line {
+        grid-column: 1;
+        grid-row: 1;
+    }
+</style>
+
+<div class="card-body login-card-body">
+    <div class="login-box-msg text-black">Đăng nhập để bắt đầu phiên của bạn</div>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form", id = "loginForm" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <div class="input-group">
+        @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+            </div>
+        </div>
+    </div>
+    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+
+    <div class="input-group mt-3">
+        @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+            </div>
+        </div>
+    </div>
+    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+    <div class="msg-container">     
+        <div class="col-md-12 px-0 mt-2 success-line" style="display: none;">
+            Bạn hãy chờ chút ...
+        </div>
+
+        <div style="display: none;" class="col-md-12 px-0 py-2 validation-summary">
+            <div class="alert alert-danger mb-0" role="alert">
+                <ul class="text-black validation-error" style="list-style: none; padding-left: 0; margin-bottom: 0;"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-7">
+        </div>
+        <div class="col-5">
+            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+        </div>
+    </div>
+    }
+    <p class="mb-1">
+        @*<a href="#">Quên mật khẩu?</a>*@
+    </p>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>   
+    <script src="~/Areas/Admin/Scripts/jsAccount.js"></script>
+}
+

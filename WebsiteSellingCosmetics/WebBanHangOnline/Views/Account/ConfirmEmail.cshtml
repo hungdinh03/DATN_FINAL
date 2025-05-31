@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Xác thực Email";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewBag.Title</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row fp-confirmation-container">
+        <h2 style="width: 100%">@ViewBag.Title</h2>
+        <div class="row" style="width: 100%;">
+            @if (ViewBag.ValidLink)
+            {
+            <div class="col-md-12">
+                <p>
+                    Xác thực email của quý khách thành công. @Html.ActionLink("Nhấn link này để đăng nhập", "LoginRegister", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                </p>
+            </div>
+            }
+            else
+            {
+            <div class="col-md-12 text-center">
+                <h3 class="text-danger">Link xác thực không đúng</h3>
+                <p class="text-danger">Quý khách hãy kiểm tra lại email!</p>
+            </div>
+            }
+        </div>
+    </div>
+</div>

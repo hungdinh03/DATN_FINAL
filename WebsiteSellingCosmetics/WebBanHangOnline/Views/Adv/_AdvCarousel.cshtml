@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Adv>
+
+<style>
+    .carousel-indicators {
+        z-index: 1;
+    }
+    .carousel-indicators li {
+        background-color: #bbb;
+        height:10px;
+        cursor: pointer;
+    }
+    .carousel-control-prev .rounded-circle, .carousel-control-next .rounded-circle {
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        margin-top: 100px;
+        margin-left: -20px;
+    }
+</style>
+
+<div id="customCarousel" class="carousel slide" data-ride="carousel">
+@if (Model != null && Model.Any())
+{
+    var i = 0;
+    var j = 0;
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+    @foreach (var item in Model)
+    {
+        <li data-target="#customCarousel" data-slide-to="@i" class="@(i == 0 ? "active" : "") rounded"></li>
+        i++;
+    }
+    </ol>
+
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+    @foreach (var item in Model)
+    {
+        <div class="carousel-item @(j == 0 ? "active" : "")">
+            <a href="@item.Link">
+                <div class="main-slider" style="background-image: url(@item.Image)" title="@item.Title">
+                    <div class="container fill-height">
+                        <div class="row align-items-center fill-height">
+                            <div class="col">
+                                <div class="main-slider-content">
+                                    @*<h6>Spring / Summer Collection 2017</h6>
+                                    <h1>Get up to 30% Off New Arrivals</h1>
+                                    <div class="red-button shop-now-button"><a href="#">shop now</a></div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        j++;
+    }
+    </div>
+
+    <!-- Controls -->
+    <a class="carousel-control-prev" href="#customCarousel" role="button" data-slide="prev">
+        <span class="d-flex justify-content-center align-items-center rounded-circle">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#customCarousel" role="button" data-slide="next">
+        <span class="d-flex justify-content-center align-items-center rounded-circle">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </span>
+        <span class="sr-only">Next</span>
+    </a>
+}
+else
+{
+    <div style="margin-top: 100px;"></div>
+}
+</div>

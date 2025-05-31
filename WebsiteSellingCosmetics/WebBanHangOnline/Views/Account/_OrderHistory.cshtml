@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<WebBanHangOnline.Models.EF.Order>
+@using PagedList.Mvc;
+
+@{
+    var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+}
+
+<div id="orderList">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã đơn hàng</th>
+                <th>Ngày tạo</th>
+                <th>Hình thức thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Tổng tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@i</td>
+                <td>@item.Code</td>
+                <td>@item.CreatedDate.ToString("dd/MM/yyyy, HH:mm:ss")</td>
+                <td>@(item.TypePayment == 1 ? "COD" : "Chuyển khoản")</td>
+                @*<td>@(item.Status == 0 ? "Chờ thanh toán" : item.Status == 1 ? "Đã thanh toán" : "Đã hủy")</td>*@
+                <td class="order-status-cell">
+                    @(item.Status == 0 ? "Chờ xác nhận" :
+                      item.Status == 1 ? "Đang vận chuyển" :
+                      item.Status == 2 ? "Đã giao" :
+                      item.Status == 3 ? "Đã hủy" : "Không xác định")
+                </td>
+                @{
+                    var tongTien = 0;
+                    foreach (var item_ in item.OrderDetails)
+                    {
+                        tongTien += item_.TotalPrice;
+                    }
+                }
+                <td class="font-weight-bold">@string.Format("{0:N0}", tongTien)<u>đ</u></td>
+                <td>
+                    <a href="/@item.Code-o@(item.Id)" class="btn green-button text-white">Xem chi tiết</a>
+                    @if (item.Status == 0)
+                    {
+                        <a href="@Url.Action("CancelOrder", "Account", new { code = item.Code })" 
+                           data-code="@item.Code" 
+                           class="btn red-button text-white btnCancelOrder">Hủy đơn</a>
+                    }
+                </td>
+            </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="d-flex justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action("OrderHistory", new { productId = ViewBag.ProductId, page }))
+    </div>
+</div>

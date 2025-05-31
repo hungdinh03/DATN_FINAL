@@ -1,0 +1,140 @@
+﻿@model PagedList.IPagedList<WebBanHangOnline.Models.ApplicationUser>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Home" class="nav-link">Trang chủ</a>
+        </li>
+        <li><a class="nav-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a> </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Account" class="nav-link">Tài khoản</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Home">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Tài khoản</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách tài khoản</h3>
+
+            <div class="card-tools">
+                <a href="/Admin/Account/Create" class="btn btn-primary">Thêm mới</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 pb-4">
+                    @using (Html.BeginForm("Index", "Account", FormMethod.Get, new { }))
+                    {
+                    <div class="input-group input-group-sm">
+                        @Html.TextBox("searchText", null, new { @class = "form-control", @placeholder = "Tìm kiếm tài khoản theo tên đăng nhập, họ tên, quyền..." })
+                        <span class="input-group-append">
+                            <button id="btnSearch" class="btn btn-info btn-flat">Tìm kiếm</button>
+                        </span>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="table-responsive" id="myTable">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Email</th>
+                            <th>Họ tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Quyền</th>
+                            <th>Ngày tạo</th>
+                            <th class="text-center">Hoạt động</th>
+                            <th style="width: 150px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 1;
+                            foreach (var user in Model)
+                            {
+                                var role = ViewBag.UserRoles[user.Id];
+                                var strCheckActive = user.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>";
+                        <tr id="trow_@user.Id">
+                            <td>@i</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>@user.FullName</td>
+                            <td>@user.Phone</td>
+                            <td>@role</td>
+                            <td>@user.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td class="text-center">
+                                <form class="d-none" id="activeForm">
+                                    @Html.AntiForgeryToken()
+                                </form>
+                                <a href="#" data-id="@user.Id" class="btnActive">@Html.Raw(strCheckActive)</a>
+                            </td>
+                            <td>
+                                <a href="/Admin/Account/Edit/@user.Id" class="btn btn-sm btn-primary">@(role != "Customer" ? "Sửa" : "Xem")</a>
+                                @if (role != "Customer")
+                                {
+                                <a href="#" data-id="@user.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                }
+                            </td>
+                        </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                        <tr>
+                            <td colspan="7">Không có bản ghi nào!</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- Phân trang -->
+                <div class="d-flex justify-content-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { searchText = ViewBag.SearchText, page }))
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/jsAccount.js"></script>
+}

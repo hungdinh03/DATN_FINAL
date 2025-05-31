@@ -1,0 +1,36 @@
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.ReviewProduct>
+@using PagedList.Mvc;
+
+<!-- User Review -->
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+<div class="user_review_container d-flex flex-column flex-sm-row mb-4">
+    <div class="review">
+        <div class="review_date">@item.CreatedDate.ToString("dd/MM/yyyy")</div>
+        <div class="user_rating">
+            <ul class="star-rating m-0">
+                @Html.Raw(WebBanHangOnline.Common.Common.HtmlRate(item.Rate))
+            </ul>
+        </div>
+        <div class="user_name mb-1">@item.FullName</div>
+        <p class="mb-0">@item.Content</p>
+    </div>
+</div>
+    }
+
+<!-- Phân trang -->
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("LoadReview", new { productId = ViewBag.ProductId, page }))
+</div>
+}
+else
+{
+<div class="user_review_container d-flex flex-column flex-sm-row mb-4">
+    <div class="review">
+        <h5>Sản phẩm này chưa có đánh giá nào...</h5>
+    </div>
+</div>
+}

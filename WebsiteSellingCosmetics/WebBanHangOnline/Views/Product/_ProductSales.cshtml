@@ -1,0 +1,91 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Product>
+
+@if (Model != null && Model.Any())
+{
+<div class="best-sellers">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section-title new-arrivals-title">
+                    <h2>Sản Phẩm Bán Chạy</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product-slider-container" style="height: 100%;">
+                    <div class="owl-carousel owl-theme product-slider">
+                    @foreach (var item in Model)
+                    {
+                        var defaultImage = "";
+                        var hoverImage = "";
+                        var img = item.ProductImage.FirstOrDefault(x => x.IsDefault);
+                        var hoverImg = item.ProductImage.FirstOrDefault(x => x.IsHover);
+
+                        if (img != null)
+                        {
+                            defaultImage = img.Image;
+                        }
+                        if (hoverImg != null)
+                        {
+                            hoverImage = hoverImg.Image;
+                        }
+
+                        <div class="owl-item product-slider-item">
+                            <div class="product-item women" style="border-right: 5px solid white;">
+                                <div class="product discount">
+                                    <div class="product-image">
+                                        <a href="/chi-tiet/@item.Alias-p@(item.Id)">
+                                            <img src="@defaultImage" alt="@item.Title" data-src="@defaultImage" data-src-hover="@hoverImage">
+                                        </a>
+                                    </div>
+                                    @*<div class="favorite favorite-left"></div>*@
+                                    @if (item.Quantity == 0 || (item.ExpiredDate - DateTime.Now).TotalDays <= 10)
+                                    {
+                                        <div class="product-bubble product-bubble-right d-flex flex-column align-items-center">Hết hàng</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="product-bubble product-bubble-right product-bubble-green d-flex flex-column align-items-center">còn @item.Quantity</div>
+                                    }
+                                    <div class="product-bubble product-bubble-right d-flex flex-column align-items-center mt-4">đã bán @item.SoldQuantity</div>
+                                    <div class="product-bubble product-bubble-left product-bubble-green d-flex flex-column align-items-center text-center p-1" style="height: fit-content; line-height: 1.5;">đã bán @ViewBag.ProductCounts[item.Id] trong 30 ngày</div>
+                                    <div class="product-info">
+                                        <h6 class="product-name"><a href="/chi-tiet/@item.Alias-p@(item.Id)">@item.Title</a></h6>
+                                        @if (item.PriceSale > 0)
+                                        {
+                                            <div class="product-price">@string.Format("{0:N0}", item.PriceSale)<u>đ</u><span>@string.Format("{0:N0}", item.Price)<u>đ</u></span></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="product-price">@string.Format("{0:N0}", item.Price)<u>đ</u></div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="green-button add-to-cart-button" style="flex: 1; margin-right: 5px;">
+                                        <a href="#" class="btnAddToCart" data-id="@item.Id">thêm vào giỏ</a>
+                                    </div>
+                                    <div class="green-button buy-now-button" style="flex: 1; margin-left: 5px; background-color: #ff6a00;">
+                                        <a href="#" class="btnBuyNow" data-id="@item.Id">mua ngay</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+
+                    <!-- Slider Navigation -->
+                    <div class="product-slider-nav-left product-slider-nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </div>
+                    <div class="product-slider-nav-right product-slider-nav d-flex align-items-center justify-content-center flex-column">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+

@@ -1,0 +1,60 @@
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.News>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Tin tức</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2 id="title">@ViewBag.Title</h2>
+    <hr class="mb-5" />
+    <div class="news-list">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+        <div class="row pb-5">
+            <div class="col-md-5">
+                <div>
+                    <a href="/@item.Alias-n@(item.Id)" title="@item.Title">
+                        <img src="@item.Image" alt="@item.Title" class="w-100 h-100" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div>
+                    <h3>
+                        <a href="/@item.Alias-n@(item.Id)" title="@item.Title" style="color: black !important;">@item.Title</a>
+                    </h3>
+                    <div>
+                        <a href="/@item.Alias-n@(item.Id)" title="@item.Title" style="color: black !important;">@item.Description</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    }
+        <div class="d-flex justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jsNews.js"></script>
+}
+

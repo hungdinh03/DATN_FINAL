@@ -1,0 +1,81 @@
+﻿@model WebBanHangOnline.Models.RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", id = "registerForm" }))
+{
+@Html.AntiForgeryToken()
+<hr />
+
+<div class="form-group">
+    @Html.LabelFor(m => m.UserName, "Tên đăng nhập", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập..." })
+        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.FullName, "Họ tên", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Họ tên..." })
+        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Phone, "Số điện thoại", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Số điện thoại..." })
+        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Address, "Địa chỉ", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Địa chỉ..." })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Email, "Email", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email..." })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, "Mật khẩu", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu..." })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ConfirmPassword, "Xác nhận mật khẩu", new { @class = "col-md-4 col-form-label" })
+    <div class="col-md-12">
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Xác nhận mật khẩu..." })
+        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="msg-container">
+    <div style="display: none;" class="col-md-12 validation-summary">
+        <div class="alert alert-danger" role="alert" style="width: fit-content">
+            <ul class="text-black validation-error"></ul>
+        </div>
+    </div>
+
+    <div class="col-md-12 success-line" style="display: none;">
+        Bạn hãy chờ chút ...
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-12">
+        <input type="submit" value="ĐĂNG KÝ" class="btn green-button text-white" />
+    </div>
+</div>
+}

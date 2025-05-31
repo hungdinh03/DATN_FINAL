@@ -1,0 +1,95 @@
+﻿@model PagedList.IPagedList<WebBanHangOnline.Models.EF.Product>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            @if (ViewBag.CateName != null)
+                            {
+                            <span class="category-name">@ViewBag.CateName</span>
+                            }
+                            else
+                            {
+                            <span class="category-name">Tất cả</span>
+                            }
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Danh mục sản phẩm</h5>
+                    </div>
+                    @Html.Action("MenuLeft", "Menu", new { id = ViewBag.CateId })
+                </div>
+                <!-- Price Range Filtering -->
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Lọc theo giá</h5>
+                    </div>
+                    <p>
+                        <input type="text" id="amount" readonly>
+                    </p>
+                    <div id="slider-range"></div>
+                    <div class="filter_button"><span>Tìm</span></div>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="main_content">
+                <!-- Products -->
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Product Sorting -->
+                            <div class="product_sorting_container product_sorting_container_top">
+                                <ul class="product_sorting">
+                                    <li>
+                                        <span class="type_sorting_text" value="original-order">Mặc định</span>
+                                        <i class="fa fa-angle-down"></i>
+                                        <ul class="sorting_type">
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Theo giá</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Theo tên</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product List -->
+                <div id="productGrid">
+                    @Html.Partial("_ProductCategory", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Content/assets/js/products_custom.js"></script>
+    <script src="~/Scripts/jsShopping.js"></script>
+    <script src="~/Scripts/jsProduct.js"></script>
+    <script src="~/Scripts/jsMenu.js"></script>
+}
+
+
+
+

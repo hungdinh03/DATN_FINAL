@@ -1,0 +1,50 @@
+﻿@model WebBanHangOnline.Models.EF.News
+@{
+    ViewBag.Title = "Chi tiết tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/whole_web_responsive.css">
+
+<style>
+    p {
+        margin: 0;
+    }
+    .news-content div {
+        padding: 15px;
+    }
+
+    .sabo-text {
+        font-family: Arial !important;
+    }
+</style>
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/tin-tuc"><i class="fa fa-angle-right" aria-hidden="true"></i>Tin tức</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Title</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        <h2 id="title">@Model.Title</h2>
+        @*<hr class="mb-5" />*@
+        <div class="row">
+            @*<div class="col-md-12 mb-3">
+                    @Model.Description
+                </div>*@
+            <div class="col-md-12 news-content">
+                @Html.Raw(Model.Detail)
+            </div>
+        </div>
+    }
+</div>
+
